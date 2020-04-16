@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map';
+
 
 import { FileUpload } from '../shared/shared';
 

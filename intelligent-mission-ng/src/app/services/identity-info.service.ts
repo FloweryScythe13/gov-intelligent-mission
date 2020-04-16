@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map';
+
 import {IdentityInfo} from '../shared/shared';
 
 @Injectable()
