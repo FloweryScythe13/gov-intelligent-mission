@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 // Third Party
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -47,7 +47,7 @@ export function initApp(identityService: IdentityInfoService) {
     BrowserAnimationsModule,
     BusyModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     ToasterModule.forRoot(),
