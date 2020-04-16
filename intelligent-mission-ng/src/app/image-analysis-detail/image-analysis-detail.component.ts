@@ -20,7 +20,7 @@ export class ImageAnalysisDetailComponent implements OnInit {
     public multiplier: number;
     public selectedFace: any;
     public selectedImage: any;
-    @ViewChild('mainImg') mainImg;
+    @ViewChild('mainImg', { static: false }) mainImg;
 
 
     constructor(

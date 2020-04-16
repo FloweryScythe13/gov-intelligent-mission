@@ -10,7 +10,7 @@ import { FileUpload } from '../shared/shared';
 export class FileUploadModal {
     public editableItem = new FileUpload();
     public properties: FileUploadModalProperties;
-    @ViewChild('fileInput') fileInput;
+    @ViewChild('fileInput', { static: true }) fileInput;
 
 
     constructor(public activeModal: NgbActiveModal) { }

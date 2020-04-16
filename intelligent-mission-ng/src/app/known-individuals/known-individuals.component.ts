@@ -29,7 +29,7 @@ export class KnownIndividualsComponent implements OnInit {
         });
 
 
-    @ViewChild('fileInput') fileInput;
+    @ViewChild('fileInput', { static: false }) fileInput;
     
     constructor(
         private modal: NgbModal, 
