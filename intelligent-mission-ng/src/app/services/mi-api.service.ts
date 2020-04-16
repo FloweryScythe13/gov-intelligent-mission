@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
@@ -9,58 +9,58 @@ import { FileUpload } from '../shared/shared';
 export class MIApiService {
     //private baseUrl = 'https://localhost:44396';
     private baseUrl = '';
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
     createPerson(person) {
-        return this.http.post(`${this.baseUrl}/api/persons`, person).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/persons`, person);
     }
 
     updatePerson(person) {
-        return this.http.put(`${this.baseUrl}/api/persons/${person.id}`, person).map(response => response.json());
+        return this.http.put(`${this.baseUrl}/api/persons/${person.id}`, person);
     }
 
     getPersonsByGroup(personGroupId) {
-        return this.http.get(`${this.baseUrl}/api/persons?personGroupId=${personGroupId}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/persons?personGroupId=${personGroupId}`);
     }
 
     getPerson(id) {
-        return this.http.get(`${this.baseUrl}/api/persons/${id}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/persons/${id}`);
     }
 
     getPersonBySpeakerProfileId(speakerIdentificationProfileId) {
-        return this.http.get(`${this.baseUrl}/api/persons?speakerIdentificationProfileId=${speakerIdentificationProfileId}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/persons?speakerIdentificationProfileId=${speakerIdentificationProfileId}`);
     }
 
     getPersonGroups() {
-        return this.http.get(`${this.baseUrl}/api/face/person-groups`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/face/person-groups`);
     }
 
     createPersonGroup(personGroup) {
-        return this.http.post(`${this.baseUrl}/api/face/person-groups`, personGroup).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/face/person-groups`, personGroup);
     }
 
     createGroupPerson(personGroupId, person) {
-        return this.http.post(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons`, person).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons`, person);
     }
 
     getPersonGroupPersonList(personGroupId) {
-        return this.http.get(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons`);
     }
 
     getPersonFaces(personGroupId, personId) {
-        return this.http.get(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons/${personId}/faces`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons/${personId}/faces`);
     }
 
     addPersonFace(personGroupId, personId, imgFile) {
         let formData = new FormData();
         formData.append('uploadFile', imgFile);
-        let headers = new Headers();
+        let headers = new HttpHeaders();
         //headers.append('Content-Type', 'multipart/form-data');
         headers.append('Content-Type', undefined);
         headers.append('Accept', 'application/json');
-        let options = new RequestOptions({ headers: headers});
+        //let options = new RequestOptions({ headers: headers});
         return this.http.post(`${this.baseUrl}/api/face/person-groups/${personGroupId}/persons/${personId}/faces`, formData)//, options)
-            .map(response => response.json());
+            ;
     }
 
     addAudioEnrollment(personId, fileToUpload: FileUpload) {
@@ -80,40 +80,40 @@ export class MIApiService {
     }
 
     trainPersonGroup(personGroupId) {
-        return this.http.post(`${this.baseUrl}/api/face/person-groups/${personGroupId}/train`, null);//.map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/face/person-groups/${personGroupId}/train`, null);//;
     }
 
     getGroupTrainingStatus(personGroupId) {
-        return this.http.get(`${this.baseUrl}/api/face/person-groups/${personGroupId}/train`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/face/person-groups/${personGroupId}/train`);
     }
 
 
     getAudioCatalogFiles() {
-        return this.http.get(`${this.baseUrl}/api/audio/catalog-files`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/audio/catalog-files`);
     }
 
     getAudioCatalogFile(audioId) {
-        return this.http.get(`${this.baseUrl}/api/audio/catalog-files/${audioId}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/audio/catalog-files/${audioId}`);
     }
 
     executeAudioRecognition(audioId) {
-        return this.http.post(`${this.baseUrl}/api/audio/${audioId}/recognize`, null).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/audio/${audioId}/recognize`, null);
     }
 
     getImageCatalogFiles() {
-        return this.http.get(`${this.baseUrl}/api/image/catalog-files`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/image/catalog-files`);
     }
 
     getImageCatalogFile(id) {
-        return this.http.get(`${this.baseUrl}/api/image/catalog-files/${id}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/image/catalog-files/${id}`);
     }
 
     getVideoCatalogFiles() {
-        return this.http.get(`${this.baseUrl}/api/video/catalog-files`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/video/catalog-files`);
     }
 
     getVideoCatalogFile(id) {
-        return this.http.get(`${this.baseUrl}/api/video/catalog-files/${id}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/video/catalog-files/${id}`);
     }
 
     deleteImageCatalogFile(id) {
@@ -137,33 +137,33 @@ export class MIApiService {
     }
 
     getLatestNews() {
-        return this.http.get(`${this.baseUrl}/api/text/latest-news`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/text/latest-news`);
     }
 
     analyzeText(id) {
-        return this.http.post(`${this.baseUrl}/api/text/latest-news/${id}/analyze`, null).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/text/latest-news/${id}/analyze`, null);
     }
 
     translateText(id) {
-        return this.http.get(`${this.baseUrl}/api/translate?id=${id}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/translate?id=${id}`);
     }
 
     // Image Analysis
     detectFaces(imageId) {
-        return this.http.post(`${this.baseUrl}/api/face/analysis/${imageId}/detect`, null).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/face/analysis/${imageId}/detect`, null);
     }
 
     identifyFaces(imageId) {
-        return this.http.post(`${this.baseUrl}/api/image/analysis/${imageId}/identify`, null).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/image/analysis/${imageId}/identify`, null);
     }
 
     identifyObjects(imageId) {
-        return this.http.post(`${this.baseUrl}/api/image/object-analysis/${imageId}/identify`, null).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/image/object-analysis/${imageId}/identify`, null);
     }
 
     // Video Analysis
     analyzeVideo(videoId) {
-        return this.http.post(`${this.baseUrl}/api/video/analysis/${videoId}`, null).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/video/analysis/${videoId}`, null);
     }
 
     // Analysis Results
@@ -171,11 +171,11 @@ export class MIApiService {
         if (!results.id) {
             throw 'You cannot save an Analysis Result unless it has an "id" property.';
         }
-        return this.http.post(`${this.baseUrl}/api/analysis-results`, results).map(response => response.json());
+        return this.http.post(`${this.baseUrl}/api/analysis-results`, results);
     }
 
     getAnalysisResults(id) {
-        return this.http.get(`${this.baseUrl}/api/analysis-results/${id}`).map(response => response.json());
+        return this.http.get(`${this.baseUrl}/api/analysis-results/${id}`);
     }
 
 
@@ -190,9 +190,9 @@ export class MIApiService {
         //headers.append('Content-Type', 'multipart/form-data');
         headers.append('Content-Type', undefined);
         headers.append('Accept', 'application/json');
-        let options = new RequestOptions({ headers: headers });
+        //let options = new RequestOptions({ headers: headers });
         return this.http.post(url, formData)//, options)
-            .map(response => response.json());
+            ;
     }
 
 }
