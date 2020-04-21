@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgModule } from '@angular/core';
 import { MIApiService } from '../services/services';
 import { Subscription } from 'rxjs';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +38,7 @@ export class AudioAnalysisComponent implements OnInit {
         let modalRef = this.modal.open(FileUploadModal);
         modalRef.componentInstance.properties = <FileUploadModalProperties>{ acceptFileTypes: '.wav' };
         modalRef.result.then(result => {
-            this.busy = this.miApi.addAudioCatalogFile(result).subscribe(savedItem => {
+            this.busy = this.miApi.addAudioCatalogFile(result).subscribe((savedItem: any) => {
                 this.files.push(savedItem);
                 this.toastr.pop('success', 'Complete', 'New audio file added successfully');
             });

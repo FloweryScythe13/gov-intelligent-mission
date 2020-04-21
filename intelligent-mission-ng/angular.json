@@ -24,7 +24,6 @@
             "styles": [
               "src/css/bootstrap.darkly.min.css",
               "src/css/site.css",
-              "node_modules/angular2-busy/build/style/busy.css",
               "node_modules/angular2-toaster/toaster.css",
               "node_modules/font-awesome/css/font-awesome.min.css"
             ],
@@ -84,7 +83,6 @@
             "styles": [
               "src/css/bootstrap.darkly.min.css",
               "src/css/site.css",
-              "node_modules/angular2-busy/build/style/busy.css",
               "node_modules/angular2-toaster/toaster.css",
               "node_modules/font-awesome/css/font-awesome.min.css"
             ],

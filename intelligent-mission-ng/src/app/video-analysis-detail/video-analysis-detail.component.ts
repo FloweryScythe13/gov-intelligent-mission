@@ -48,7 +48,7 @@ export class VideoAnalysisDetailComponent implements OnInit {
             console.log('**previous analysis results', data);
             if (data) {
                 this.toastr.pop('success', 'Results Found', 'Previous Analysis results were found for this video.');
-                var processingResult = JSON.parse(data.processingResult);
+                var processingResult = JSON.parse((data as any).processingResult);
                 console.log('**processingResult', processingResult);
                 
             } else {

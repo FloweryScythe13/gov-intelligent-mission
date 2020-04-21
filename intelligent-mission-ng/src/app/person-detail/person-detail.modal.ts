@@ -18,6 +18,6 @@ export class PersonDetailModal implements OnInit {
     constructor(public activeModal: NgbActiveModal, private miApi: MIApiService) { }
 
     ngOnInit() {
-        this.busy = this.miApi.getPersonFaces(this.person.facePersonGroupId, this.person.facePersonId).subscribe(data => this.faces = data);
+        this.busy = this.miApi.getPersonFaces(this.person.facePersonGroupId, this.person.facePersonId).subscribe(data => this.faces = (data as any));
     }
 }

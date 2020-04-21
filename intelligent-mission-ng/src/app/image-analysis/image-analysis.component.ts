@@ -31,14 +31,14 @@ export class ImageAnalysisComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.busy = this.miApi.getImageCatalogFiles().subscribe(data => this.files = data);
+        this.busy = this.miApi.getImageCatalogFiles().subscribe((data: any) => this.files = data);
     }
 
     addFile() {
         let modalRef = this.modal.open(FileUploadModal);
         modalRef.componentInstance.properties = <FileUploadModalProperties>{ acceptFileTypes: '.jpeg,.jpg,.png,.gif' };
         modalRef.result.then(result => {
-            this.busy = this.miApi.addImageCatalogFile(result).subscribe(savedItem => {
+            this.busy = this.miApi.addImageCatalogFile(result).subscribe((savedItem: any) => {
                 this.files.push(savedItem);
                 this.toastr.pop('success', 'Complete', 'New image file added successfully');
             });

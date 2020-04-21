@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Third Party
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { ToasterModule } from 'angular2-toaster';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,11 +45,11 @@ export function initApp(identityService: IdentityInfoService) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    BusyModule,
+    NgBusyModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule.forRoot(),
+    NgbModule,
     ToasterModule.forRoot(),
   ],
   providers: [

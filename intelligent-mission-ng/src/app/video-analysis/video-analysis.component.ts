@@ -32,7 +32,7 @@ export class VideoAnalysisComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.busy = this.miApi.getVideoCatalogFiles().subscribe(data => this.files = data);
+        this.busy = this.miApi.getVideoCatalogFiles().subscribe(data => this.files = data as any);
     }
 
     addFile() {
@@ -40,7 +40,7 @@ export class VideoAnalysisComponent implements OnInit {
         modalRef.componentInstance.properties = <FileUploadModalProperties>{ acceptFileTypes: '.mp4' };
         modalRef.result.then(result => {
             this.busy = this.miApi.addVideoCatalogFile(result).subscribe(savedItem => {
-                this.files.push(savedItem);
+                this.files.push(savedItem as any);
                 this.toastr.pop('success', 'Complete', 'New audio file added successfully');
             });
         }, reason => reason);

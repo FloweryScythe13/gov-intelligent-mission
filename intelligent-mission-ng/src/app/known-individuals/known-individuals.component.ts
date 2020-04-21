@@ -29,7 +29,7 @@ export class KnownIndividualsComponent implements OnInit {
         });
 
 
-    @ViewChild('fileInput', { static: false }) fileInput;
+    @ViewChild('fileInput') fileInput;
     
     constructor(
         private modal: NgbModal, 
@@ -42,7 +42,7 @@ export class KnownIndividualsComponent implements OnInit {
 
 
     ngOnInit() {
-        this.busy = this.miApi.getPersonGroups().subscribe(result => this.personGroups = result);
+        this.busy = this.miApi.getPersonGroups().subscribe(result => this.personGroups = result as any);
     }
 
     addGroup() {
@@ -52,8 +52,8 @@ export class KnownIndividualsComponent implements OnInit {
 
         this.modal.open(GroupEditorModal).result.then(result => {
             this.busy = this.miApi.createPersonGroup(result).subscribe(savedPersonGroup => {
-                this.personGroups.push(savedPersonGroup);
-                this.selectedGroupId = savedPersonGroup.personGroupId;
+                this.personGroups.push(savedPersonGroup as any);
+                this.selectedGroupId = (savedPersonGroup as any).personGroupId;
             });
         }, reason => reason);
     }
@@ -156,14 +156,14 @@ export class KnownIndividualsComponent implements OnInit {
 
     onGroupsChange() {
         if (this.selectedGroupId) {
-            this.busy = this.miApi.getPersonsByGroup(this.selectedGroupId).subscribe(result => this.personList = result);
+            this.busy = this.miApi.getPersonsByGroup(this.selectedGroupId).subscribe(result => this.personList = result as any);
         }
     }
 
     personClick(person) {
         this.selectedPerson = person;
         console.log('**selectedPerson', this.selectedPerson);
-        this.busy = this.miApi.getPersonFaces(this.selectedGroupId, this.selectedPerson.facePersonId).subscribe(result => this.personFaces = result);
+        this.busy = this.miApi.getPersonFaces(this.selectedGroupId, this.selectedPerson.facePersonId).subscribe(result => this.personFaces = result as any);
     }
 
     trainPersonGroup() {
@@ -181,8 +181,8 @@ export class KnownIndividualsComponent implements OnInit {
             return;
         }
 
-        this.busy = this.miApi.getGroupTrainingStatus(this.selectedGroupId).subscribe(result => {
-            let status = <TrainingStatus>result.status;
+        this.busy = this.miApi.getGroupTrainingStatus(this.selectedGroupId).subscribe((result: any) => {
+            let status = (result as any).status as TrainingStatus;
             switch (status) {
                 case TrainingStatus.succeeded:
                     this.toastr.pop('success', 'Training Succeeded');

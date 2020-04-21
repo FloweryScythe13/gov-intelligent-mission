@@ -27,8 +27,8 @@ export class TextAnalysisComponent implements OnInit {
     ngOnInit() {
         this.busy = this.miApi.getLatestNews().subscribe(data => {
             console.log('**news data', data);
-            this.newsItems = data.worldNews.rss.channel.item;
-            this.newsItemsChina = data.chinaNews.rss.channel.item;
+            this.newsItems = (data as any).worldNews.rss.channel.item;
+            this.newsItemsChina = (data as any).chinaNews.rss.channel.item;
         });
     }
 
