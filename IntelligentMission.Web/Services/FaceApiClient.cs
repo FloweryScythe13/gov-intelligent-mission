@@ -1,5 +1,7 @@
-﻿using Microsoft.ProjectOxford.Face;
-using Microsoft.ProjectOxford.Face.Contract;
+﻿//using Microsoft.ProjectOxford.Face;
+//using Microsoft.ProjectOxford.Face.Contract;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +12,18 @@ namespace IntelligentMission.Web.Services
 {
     public class FaceApiClient
     {
-        private FaceServiceClient faceServiceClient;
+        private IFaceClient faceServiceClient;
 
-        public FaceApiClient(FaceServiceClient faceServiceClient)
+        public FaceApiClient(FaceClient faceServiceClient)
         {
             this.faceServiceClient = faceServiceClient;
         }
 
         #region Person Groups
 
-        public async Task<PersonGroup[]> GetPersonGroups()
+        public async Task<IEnumerable<PersonGroup>> GetPersonGroups()
         {
-            var groups = await this.faceServiceClient.ListPersonGroupsAsync();
+            var groups = await this.faceServiceClient.PersonGroup.ListAsync();
             return groups;
         }
 
@@ -32,22 +34,22 @@ namespace IntelligentMission.Web.Services
                 group.PersonGroupId = Guid.NewGuid().ToString();
             }
 
-            await faceServiceClient.CreatePersonGroupAsync(group.PersonGroupId, group.Name);
+            await faceServiceClient.PersonGroup.CreateAsync(group.PersonGroupId, group.Name);
         }
 
         public async Task DeletePersonGroup(string personGroupId)
         {
-            await faceServiceClient.DeletePersonGroupAsync(personGroupId);
+            await faceServiceClient.PersonGroup.DeleteAsync(personGroupId);
         }
 
         public async Task TrainPersonGroup(string personGroupId)
         {
-            await faceServiceClient.TrainPersonGroupAsync(personGroupId);
+            await faceServiceClient.PersonGroup.TrainAsync(personGroupId);
         }
 
         public async Task<TrainingStatus> GetTrainingStatus(string personGroupId)
         {
-            var trainingStatus = await faceServiceClient.GetPersonGroupTrainingStatusAsync(personGroupId);
+            var trainingStatus = await faceServiceClient.PersonGroup.GetTrainingStatusAsync(personGroupId);
             return trainingStatus;
         }
 
@@ -55,36 +57,36 @@ namespace IntelligentMission.Web.Services
 
         #region Persons
 
-        public async Task<CreatePersonResult> AddPerson(string personGroupId, string personName)
+        public async Task<Person> AddPerson(string personGroupId, string personName)
         {
-            var person = await faceServiceClient.CreatePersonAsync(personGroupId, personName);
+            var person = await faceServiceClient.PersonGroupPerson.CreateAsync(personGroupId, personName);
             return person;
         }
 
-        public async Task<Person[]> GetPersonGroupPersonList(string personGroupId)
+        public async Task<IEnumerable<Person>> GetPersonGroupPersonList(string personGroupId)
         {
-            var personList = await faceServiceClient.GetPersonsAsync(personGroupId);
+            var personList = await faceServiceClient.PersonGroupPerson.ListAsync(personGroupId);
             return personList;
         }
 
         public async Task DeletePerson(string personGroupId, string personId)
         {
-            await faceServiceClient.DeletePersonAsync(personGroupId, personId.ToGuid());
+            await faceServiceClient.PersonGroupPerson.DeleteAsync(personGroupId, personId.ToGuid());
         }
 
         #endregion
 
         #region Faces
 
-        public async Task<List<PersonFace>> GetPersonFaces(string personGroupId, string personId)
+        public async Task<List<PersistedFace>> GetPersonFaces(string personGroupId, string personId)
         {
             var pId = new Guid(personId);
-            var person = await faceServiceClient.GetPersonAsync(personGroupId, pId);
+            var person = await faceServiceClient.PersonGroupPerson.GetAsync(personGroupId, pId);
 
-            var personFaceList = new List<PersonFace>();
+            var personFaceList = new List<PersistedFace>();
             foreach (var faceId in person.PersistedFaceIds)
             {
-                var face = await faceServiceClient.GetPersonFaceAsync(personGroupId, pId, faceId);
+                var face = await faceServiceClient.PersonGroupPerson.GetFaceAsync(personGroupId, pId, faceId);
                 personFaceList.Add(face);
             }
             return personFaceList;
@@ -92,36 +94,36 @@ namespace IntelligentMission.Web.Services
 
         public async Task<Person> GetPerson(string personGroupdId, string personId)
         {
-            var person = await this.faceServiceClient.GetPersonAsync(personGroupdId, personId.ToGuid());
+            var person = await this.faceServiceClient.PersonGroupPerson.GetAsync(personGroupdId, personId.ToGuid());
             return person;
         }
 
-        public async Task<PersonFace> GetPersonFace(string personGroupId, string personId, string faceId)
+        public async Task<PersistedFace> GetPersonFace(string personGroupId, string personId, string faceId)
         {
-            var face = await faceServiceClient.GetPersonFaceAsync(personGroupId, personId.ToGuid(), faceId.ToGuid());
+            var face = await faceServiceClient.PersonGroupPerson.GetFaceAsync(personGroupId, personId.ToGuid(), faceId.ToGuid());
             return face;
         }
 
-        public async Task<AddPersistedFaceResult> AddPersonFace(string personGroupId, string personId, string faceUri)
+        public async Task<PersistedFace> AddPersonFace(string personGroupId, string personId, string faceUri)
         {
             var pId = new Guid(personId);
-            var personFaceResult = await faceServiceClient.AddPersonFaceAsync(personGroupId, pId, faceUri, faceUri);
+            var personFaceResult = await faceServiceClient.PersonGroupPerson.AddFaceFromUrlAsync(personGroupId, pId, faceUri, faceUri);
             return personFaceResult;
         }
 
         public async Task DeletePersonFace(string personGroupId, string personId, string faceId)
         {
-            await faceServiceClient.DeletePersonFaceAsync(personGroupId, personId.ToGuid(), faceId.ToGuid());
+            await faceServiceClient.PersonGroupPerson.DeleteFaceAsync(personGroupId, personId.ToGuid(), faceId.ToGuid());
         }
 
         #endregion
 
         #region Analysis Methods
 
-        public async Task<Face[]> Detect(string imgUrl)
+        public async Task<IEnumerable<DetectedFace>> Detect(string imgUrl)
         {
-            var faces = await this.faceServiceClient.DetectAsync(
-                imageUrl: imgUrl,
+            var faces = await this.faceServiceClient.Face.DetectWithUrlAsync(
+                url: imgUrl,
                 returnFaceAttributes: new[] {
                     FaceAttributeType.Gender,
                     FaceAttributeType.Smile,
@@ -132,10 +134,10 @@ namespace IntelligentMission.Web.Services
             return faces;
         }
 
-        public async Task<IdentifyResult[]> Identify(string personGroupId, IEnumerable<Guid> faceIds)
+        public async Task<IEnumerable<IdentifyResult>> Identify(string personGroupId, IEnumerable<Guid> faceIds)
         {
             var ids = faceIds.ToArray();
-            return await this.faceServiceClient.IdentifyAsync(personGroupId, ids);
+            return await this.faceServiceClient.Face.IdentifyAsync(ids, personGroupId);
         }
     }
     #endregion

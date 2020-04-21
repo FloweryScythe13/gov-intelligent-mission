@@ -1,11 +1,14 @@
 ﻿using IntelligentMission.Web.Models;
-using Microsoft.ProjectOxford.Face;
-using Microsoft.ProjectOxford.Face.Contract;
+//using Microsoft.ProjectOxford.Face;
+//using Microsoft.ProjectOxford.Face.Contract;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 
 namespace IntelligentMission.Web.Services
 {
@@ -52,7 +55,9 @@ namespace IntelligentMission.Web.Services
 
             // 3. See if we can identify any faces from the ones detected
             var faceIds = detectedFaces.Select(x => x.FaceId).ToArray();
-            var identifiedPersons = await this.IdentifyAll(faceIds);
+            var nonEmptyFaceIds = faceIds.Where(y => y.HasValue).Cast<Guid>();
+
+            var identifiedPersons = await this.IdentifyAll(nonEmptyFaceIds);
 
             // 4. If anyone identified, map them up with originally detected face
             var identifiedFaces = detectedFaces.Select(x => new IdentifiedFace { Face = x }).ToList();
@@ -65,7 +70,7 @@ namespace IntelligentMission.Web.Services
             return identifiedFaces;
         }
 
-        private async Task<List<IdentifiedPerson>> IdentifyAll(Guid[] faceIds)
+        private async Task<List<IdentifiedPerson>> IdentifyAll(IEnumerable<Guid> faceIds)
         {
             var personGroups = await this.faceApi.GetPersonGroups();
             var allResults = new List<IdentifiedPerson>();
@@ -79,7 +84,7 @@ namespace IntelligentMission.Web.Services
             return allResults;
         }
 
-        private async Task<List<IdentifiedPerson>> IdentifyAllForGroup(Guid[] faceIds, string personGroupdId)
+        private async Task<List<IdentifiedPerson>> IdentifyAllForGroup(IEnumerable<Guid> faceIds, string personGroupdId)
         {
             var skipToken = 0;
             const int pageSize = 10;
@@ -116,7 +121,7 @@ namespace IntelligentMission.Web.Services
                 foreach (var identifyResult in results)
                 {
                     Console.WriteLine("Result of face: {0}", identifyResult.FaceId);
-                    if (identifyResult.Candidates.Length == 0)
+                    if (identifyResult.Candidates.Count == 0)
                     {
                         Console.WriteLine("No one identified");
                     }
@@ -135,9 +140,9 @@ namespace IntelligentMission.Web.Services
                 }
                 return resultList;
             }
-            catch (FaceAPIException ex)
+            catch (APIErrorException ex)
             {
-                Console.WriteLine($"**** Exception: {ex.ErrorCode}, {ex.ErrorMessage}");
+                Console.WriteLine($"**** Exception: {ex.InnerException?.Data ?? ex.Data}, {ex.InnerException?.Message ?? ex.Message}");
                 throw ex;
             }
         }

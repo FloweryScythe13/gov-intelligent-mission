@@ -3,12 +3,13 @@ using IntelligentMission.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.ProjectOxford.Face.Contract;
+//using Microsoft.ProjectOxford.Face.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 
 namespace IntelligentMission.Web.Controllers
 {
@@ -110,8 +111,8 @@ namespace IntelligentMission.Web.Controllers
             var blobUri = await this.storageClient.AddNewBlob(personGroupId, personId, uploadFile);
             var personFaceResult = await this.faceApi.AddPersonFace(personGroupId, personId, blobUri);
 
-            var personFace = new PersonFace { PersistedFaceId = personFaceResult.PersistedFaceId, UserData = blobUri };
-            return this.Ok(personFace);
+            //var personFace = new PersonFace { PersistedFaceId = personFaceResult.PersistedFaceId, UserData = blobUri };
+            return this.Ok(personFaceResult) ;
         }
 
         [HttpDelete("person-groups/{personGroupId}/persons/{personId}/faces/{faceId}")]

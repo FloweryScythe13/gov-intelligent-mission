@@ -15,9 +15,11 @@ using IntelligentMission.Web.Services;
 using IntelligentMission.Web.Models;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.ProjectOxford.Face;
+//using Microsoft.ProjectOxford.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices;
 
 namespace IntelligentMission.Web
 {
@@ -47,7 +49,19 @@ namespace IntelligentMission.Web
             services.AddSingleton<IConfiguration>(this.Configuration);
             //services.AddOptions();
             //services.Configure<IMConfig>(this.Configuration.GetSection("IntelligentMissionConfig"));
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "localCORS",
+                    builder =>
+                    {
+                        builder.WithOrigins(/*"http://localhost:2943/",
+                                            "http://localhost:2943/",
+                                            "http://localhost:4200"*/
+                                            "*").AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });
             // Add framework services.
             services.AddMemoryCache();
             //services.AddMvc();
@@ -78,8 +92,8 @@ namespace IntelligentMission.Web
             services.AddTransient<AudioManager>();
             services.AddTransient<CloudStorageAccount>(p => p.GetService<ServiceFactory>().CreateCloudStorageAccount2());
             services.AddTransient<CloudBlobClient>(p => p.GetService<ServiceFactory>().CreateCloudBlobClient());
-            services.AddTransient<FaceServiceClient>(p => p.GetService<ServiceFactory>().CreateFaceServiceClient2());
-            services.AddTransient<DocumentClient>(p => p.GetService<ServiceFactory>().CreateDocumentClient2());
+            services.AddTransient<FaceClient>(p => p.GetService<ServiceFactory>().CreateFaceServiceClient2());
+            services.AddSingleton<DocumentClient>(p => p.GetService<ServiceFactory>().CreateDocumentClient2());
             
         }
 
@@ -105,13 +119,14 @@ namespace IntelligentMission.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            
-            app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
-            //    RequestPath = new PathString("/node_modules")
-            //});
+
+            //app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+                RequestPath = ""
+            });
 
             app.UseCookieAuthentication();
 
@@ -123,6 +138,7 @@ namespace IntelligentMission.Web
             });
 
             //app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
+            app.UseCors("localCORS");
 
             app.UseMvc(routes =>
             {

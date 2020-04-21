@@ -45,7 +45,7 @@ namespace IntelligentMission.Web.Services
 
             using (var stream = blob.OpenReadStream())
             {
-                await blockBlob.UploadFromStreamAsync(stream);
+                await blockBlob.UploadFromStreamAsync(stream, accessCondition: null, options: new BlobRequestOptions() { ServerTimeout = TimeSpan.FromMinutes(3) }, operationContext: new OperationContext());
             }
             return blockBlob.Uri.ToString();
         }

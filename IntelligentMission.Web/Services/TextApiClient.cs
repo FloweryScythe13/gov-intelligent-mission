@@ -19,7 +19,7 @@ namespace IntelligentMission.Web.Services
 
     public class TextApiClient : ITextApiClient
     {
-        private const string baseUrl = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0";
+        private const string baseUrl = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.1";
         private IMConfig config;
 
         public TextApiClient(IMConfig config)

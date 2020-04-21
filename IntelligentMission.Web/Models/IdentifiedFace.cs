@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 
 namespace IntelligentMission.Web.Models
 {
     public class IdentifiedFace //: Face
     {
-        public Face Face { get; set; }
+        //public Face Face { get; set; }
+        public DetectedFace Face { get; set; }
         //public IMPerson PersonInfo { get; set; }
         public IdentifiedPerson IdentifiedPerson { get; set; }
     }

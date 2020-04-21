@@ -198,7 +198,7 @@ namespace IntelligentMission.Web.Services
                     await this.docClient.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(DocDbNames.DbName),
                         new DocumentCollection { Id = collectionName },
-                        new RequestOptions { OfferThroughput = 1000 });
+                        new RequestOptions { OfferThroughput = 400 });
                 }
                 else
                 {

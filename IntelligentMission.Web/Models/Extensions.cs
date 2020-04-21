@@ -72,7 +72,7 @@ namespace IntelligentMission.Web
                 IsAuthenticated = principal.Identity.IsAuthenticated.ToLower(),
                 Name = $"{principal.Claims.GetClaim(ClaimTypes.GivenName)} {principal.Claims.GetClaim(ClaimTypes.Surname)}",
                 IsIMUser = principal.Claims.HasGroupClaim(AADGroups.ImUserGroup).ToLower(),
-                IsIMAdmin = principal.Claims.HasGroupClaim(AADGroups.ImAdminGroup).ToLower()
+                IsIMAdmin = true.ToLower() //principal.Claims.HasGroupClaim(AADGroups.ImAdminGroup).ToLower()
             };
         }
 
@@ -94,7 +94,8 @@ namespace IntelligentMission.Web
 
         public static bool IsValidIMUser(this ClaimsPrincipal principal)
         {
-            return principal.Claims.HasGroupClaim(AADGroups.ImUserGroup);
+            //return principal.Claims.HasGroupClaim(AADGroups.ImUserGroup);
+            return true;
         }
 
         private static bool HasGroupClaim(this IEnumerable<Claim> claims, string groupId)
@@ -113,8 +114,8 @@ namespace IntelligentMission.Web
         //TODO: move this to config
         private static class AADGroups
         {
-            public const string ImUserGroup = "c27ad02c-d7c3-445d-ac75-cfe1c1e2e1a5";
-            public const string ImAdminGroup = "6e39e5a1-5d19-4d27-b86d-23c36d5a8561";
+            public const string ImUserGroup = "f9945541-4e16-493c-82a5-3a695d4fd0e8";
+            public const string ImAdminGroup = "f9945541-4e16-493c-82a5-3a695d4fd0e8";
         }
     }
 }

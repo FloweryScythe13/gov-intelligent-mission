@@ -1,6 +1,7 @@
 ﻿using IntelligentMission.Web.Models;
 using Microsoft.Azure.Documents.Client;
-using Microsoft.ProjectOxford.Face;
+//using Microsoft.ProjectOxford.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -32,7 +33,7 @@ namespace IntelligentMission.Web.Services
         public CloudBlobClient CreateCloudBlobClient() => this.CreateCloudStorageAccount2().CreateCloudBlobClient();
 
         //public FaceServiceClient CreateFaceServiceClient2() => new FaceServiceClient(this.config.Keys.FaceApiKey);
-        public FaceServiceClient CreateFaceServiceClient2() => new FaceServiceClient(this.config.Keys.FaceApiKey, this.config.CSEndpoints.FaceApi);
+        public FaceClient CreateFaceServiceClient2() => new FaceClient(new ApiKeyServiceClientCredentials(this.config.Keys.FaceApiKey)) { Endpoint = this.config.CSEndpoints.FaceApi };
 
         public DocumentClient CreateDocumentClient2() => new DocumentClient(new Uri(this.config.DocDbConfig.EndpointUri), this.config.DocDbConfig.PrimaryKey);
 
