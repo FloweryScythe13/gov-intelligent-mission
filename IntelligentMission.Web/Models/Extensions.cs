@@ -72,7 +72,7 @@ namespace IntelligentMission.Web
                 IsAuthenticated = principal.Identity.IsAuthenticated.ToLower(),
                 Name = $"{principal.Claims.GetClaim(ClaimTypes.GivenName)} {principal.Claims.GetClaim(ClaimTypes.Surname)}",
                 IsIMUser = principal.Claims.HasGroupClaim(AADGroups.ImUserGroup).ToLower(),
-                IsIMAdmin = true.ToLower() //principal.Claims.HasGroupClaim(AADGroups.ImAdminGroup).ToLower()
+                IsIMAdmin = principal.Claims.HasGroupClaim(AADGroups.ImAdminGroup).ToLower()
             };
         }
 
@@ -94,8 +94,8 @@ namespace IntelligentMission.Web
 
         public static bool IsValidIMUser(this ClaimsPrincipal principal)
         {
-            //return principal.Claims.HasGroupClaim(AADGroups.ImUserGroup);
-            return true;
+            return principal.Claims.HasGroupClaim(AADGroups.ImUserGroup);
+            //return true;
         }
 
         private static bool HasGroupClaim(this IEnumerable<Claim> claims, string groupId)
