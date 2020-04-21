@@ -158,7 +158,7 @@ namespace IntelligentMission.Web
             });
 
 
-            app.UseNodeModules(env);
+            //app.UseNodeModules(env);
 
             //TODO: ensure DocDb collections existence
             
