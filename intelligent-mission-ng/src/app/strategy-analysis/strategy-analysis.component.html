@@ -1,0 +1,148 @@
+<div>
+    <h2>Network</h2>
+    <h3>Basic usage</h3>
+    <!-- <div id="node-popUp">
+      <span id="node-operation">node</span> <br />
+      <table style="margin:auto;">
+        <tbody>
+          <tr>
+            <td>id</td>
+            <td><input id="node-id" value="new value" /></td>
+          </tr>
+          <tr>
+            <td>label</td>
+            <td><input id="node-label" value="new value" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="button" value="save" id="node-saveButton" />
+      <input type="button" value="cancel" id="node-cancelButton" />
+    </div>
+    
+    <div id="edge-popUp">
+      <span id="edge-operation">edge</span> <br />
+      <table style="margin:auto;">
+        <tbody>
+          <tr>
+            <td>label</td>
+            <td><input id="edge-label" value="new value" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="button" value="save" id="edge-saveButton" />
+      <input type="button" value="cancel" id="edge-cancelButton" />
+    </div> -->
+    <div
+      class="network-canvas"
+      id="networkId1"
+    ></div>
+    <!-- <table>
+        <tbody>
+          <tr>
+            <td>
+              <h2>Node</h2>
+              <table>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td><label for="node-id">Id</label></td>
+                    <td><input id="node-id" type="text" value="6" [(ngModel)]="editableNode.id"/></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><label for="node-label">Label</label></td>
+                    <td><input id="node-label" type="text" value="Node 6" [(ngModel)]="editableNode.label" /></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><label for="node-type">Type</label></td>
+                    <td><select name="node-type" id="node-type"  [(ngModel)]="editableNode.type">
+                        <option value="">--Please choose an option--</option>
+                        <option value="event">Event</option>
+                        <option value="action">Action</option>
+                        </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>Action</td>
+                    <td>
+                      <button id="node-add" (click)="addNode(editableNode)">Add</button>
+                      <button id="node-update" (click)="updateNode(editableNode)">Update</button>
+                      <button id="node-remove" (click)="removeNode(editableNode.id)">Remove</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+            <td>
+              <h2>Edge</h2>
+              <table>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td><label for="edge-id">Id</label></td>
+                    <td><input id="edge-id" type="text" value="5" [(ngModel)]="editableEdge.id"/></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><label for="edge-from">From</label></td>
+                    <td><input id="edge-from" type="text" value="3" [(ngModel)]="editableEdge.from"/></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><label for="edge-to">To</label></td>
+                    <td><input id="edge-to" type="text" value="4" [(ngModel)]="editableEdge.to"/></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>Action</td>
+                    <td>
+                      <button id="edge-add" (click)="addEdge(editableEdge);">Add</button>
+                      <button id="edge-update" (click)="updateEdge(editableEdge);">Update</button>
+                      <button id="edge-remove" (click)="removeEdge(editableEdge.id);">Remove</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+    <p><strong>Note:</strong> Open your dev tools to see the console output when the network receives click events.</p>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Objective</label>
+      <select class="form-control" id="analysis-select" [(ngModel)]="objectiveNode">
+        <option value="">--Please select a node as the objective--</option>
+        <option *ngFor="let item of nodes.get(); index as i;" [value]="item.label">{{item.label}}</option>
+      </select>
+    </div>
+    
+    <button class="btn btn-primary" (click)="analyze()">Analyze Morphic Web</button>
+  </div>
+  <div style="text-align:left;width:500px;">
+    <h1>
+        Results
+    </h1>
+
+    <table *ngIf="analysisResult">
+        <!-- ADD HEADERS -->
+        <tr>
+            <th>Node Name</th>
+                <th>Total Score</th>
+                    <th>Base Score</th>
+                    <th>Tactical Openings Score</th>
+                    <th>Event Openings Score</th>
+        </tr>
+
+        <!-- BIND ARRAY TO TABLE -->
+        <tr *ngFor="let item of analysisResult.ActionAnalysis.AnalysisResults">
+            <td>{{item.NodeName}}</td>
+                <td>{{item.BaseScore * 2 + item.TacticalOpeningsScore + item.EventOpeningsScore}}</td>
+                <td>{{item.BaseScore}}</td>
+                    <td>{{item.TacticalOpeningsScore}}</td>
+                    <td>{{item.EventOpeningsScore}}</td>
+
+        </tr>
+    </table>
+</div>

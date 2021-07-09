@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{action}} Node</h4>
+</div>
+<div class="modal-body">
+    <table style="margin:auto;">
+        <tbody>
+          <!-- <tr>
+            <td>Id</td>
+            <td><input id="node-id" value="new value" [(ngModel)]="editableItem.id"/></td>
+          </tr> -->
+          <tr>
+            <td>Label</td>
+            <td><input id="node-label" value="new value" [(ngModel)]="editableItem.label"/></td>
+          </tr>
+          <tr>
+            <td>Type</td>
+            <td><select id="node-type" [(ngModel)]="editableItem.group">
+              <option value="">--Please choose an option--</option>
+              <option value="event">Event</option>
+              <option value="action">Action</option>
+              </select></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="save()">{{action}}</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cancelled')">Cancel</button>
+</div>

@@ -19,3 +19,5 @@ export * from './shared-components/confirm-modal/confirm-modal.component';
 export * from './text-analysis/text-analysis.component';
 export * from './video-analysis/video-analysis.component';
 export * from './video-analysis-detail/video-analysis-detail.component';
+export * from './strategy-analysis/strategy-analysis.component';
+export * from './node-editor/node-editor.component';

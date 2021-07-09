@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent, KnownIndividualsComponent, ImageAnalysisComponent, ImageAnalysisDetailComponent, AudioAnalysisComponent, AudioAnalysisDetailComponent, VideoAnalysisComponent, VideoAnalysisDetailComponent, TextAnalysisComponent } from './components';
+import { HomeComponent, KnownIndividualsComponent, ImageAnalysisComponent, ImageAnalysisDetailComponent, AudioAnalysisComponent, AudioAnalysisDetailComponent, VideoAnalysisComponent, VideoAnalysisDetailComponent, TextAnalysisComponent, StrategyAnalysisComponent } from './components';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'video-analysis', component: VideoAnalysisComponent },
   { path: 'video-analysis/:videoId', component: VideoAnalysisDetailComponent },
   { path: 'text-analysis', component: TextAnalysisComponent },
+  { path: 'strategy-analysis', component: StrategyAnalysisComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // Third Party
@@ -16,7 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 // import { LoginComponent } from './login/login.component';
 import { IdentityInfoService, MIApiService } from './services/services';
 import { IdentityInfo } from './shared/shared';
-import { AppComponent, AudioAnalysisComponent, AudioAnalysisDetailComponent, ConfirmModalComponent, FileUploadModal, HomeComponent, ImageAnalysisComponent, ImageAnalysisDetailComponent, GroupEditorModal, KnownIndividualsComponent, LoginComponent, NavMenuComponent, PersonDetailModal, PersonEditorModal, TextAnalysisComponent, VideoAnalysisComponent, VideoAnalysisDetailComponent } from './components';
+import { AppComponent, AudioAnalysisComponent, AudioAnalysisDetailComponent, ConfirmModalComponent, FileUploadModal, HomeComponent, ImageAnalysisComponent, ImageAnalysisDetailComponent, GroupEditorModal, KnownIndividualsComponent, LoginComponent, NavMenuComponent, PersonDetailModal, PersonEditorModal, TextAnalysisComponent, VideoAnalysisComponent, VideoAnalysisDetailComponent, StrategyAnalysisComponent, NodeEditorModal } from './components';
+import { VisModule } from 'ngx-vis';
+import { Network } from 'vis-network';
 
 export function initApp(identityService: IdentityInfoService) {
   return () => identityService.load();
@@ -40,17 +42,21 @@ export function initApp(identityService: IdentityInfoService) {
     PersonEditorModal,
     TextAnalysisComponent,
     VideoAnalysisComponent,
-    VideoAnalysisDetailComponent
+    VideoAnalysisDetailComponent,
+    StrategyAnalysisComponent,
+    NodeEditorModal
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     NgBusyModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
     ToasterModule.forRoot(),
+    VisModule
   ],
   providers: [
     MIApiService,
@@ -75,7 +81,8 @@ export function initApp(identityService: IdentityInfoService) {
     FileUploadModal,
     GroupEditorModal,
     PersonDetailModal,
-    PersonEditorModal
+    PersonEditorModal,
+    NodeEditorModal
   ],
 })
 export class AppModule { }

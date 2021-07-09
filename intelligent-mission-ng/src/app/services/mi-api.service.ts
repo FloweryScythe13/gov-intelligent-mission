@@ -7,8 +7,8 @@ import { FileUpload } from '../shared/shared';
 
 @Injectable()
 export class MIApiService {
-    //private baseUrl = 'https://localhost:44396';
-    private baseUrl = '';
+    private baseUrl = 'https://localhost:44396';
+    //private baseUrl = '';
     constructor(private http: HttpClient) {}
 
     createPerson(person) {
@@ -176,6 +176,11 @@ export class MIApiService {
 
     getAnalysisResults(id) {
         return this.http.get(`${this.baseUrl}/api/analysis-results/${id}`);
+    }
+
+    analyzeMorphicWeb(graph, eventTarget) {
+        const headers = { "X-Requested-With": "XMLHttpRequest" };
+        return this.http.post(`http://localhost:57052/createWeb?eventTarget=${eventTarget}`, graph, { headers });
     }
 
 
